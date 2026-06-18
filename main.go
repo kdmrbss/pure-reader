@@ -5,7 +5,8 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"net/url"
+	"net/url" // İşletim sisteminin portunu okumak için eklendi
+	"os"
 	"time"
 
 	"github.com/go-shiori/go-readability"
@@ -317,6 +318,12 @@ func main() {
 		return tmpl.Execute(c.Response().BodyWriter(), data)
 	})
 
-	fmt.Println("Çift dilli ve temalı sürüm başlatıldı: http://localhost:3000")
-	log.Fatal(app.Listen(":3000"))
+	fmt.Println("Çift dilli ve temalı sürüm başlatıldı!")
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	log.Fatal(app.Listen(":" + port))
 }
